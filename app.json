@@ -21,7 +21,8 @@
       },
       "permissions": [
         "android.permission.INTERNET"
-      ]
+      ],
+      "package": "com.erickoliveira88.simuinveste"
     },
     "web": {
       "favicon": "./assets/favicon.png"
