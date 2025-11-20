@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import { BottomNavigation, Appbar } from 'react-native-paper';
+import { BottomNavigation, Appbar, useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DashboardScreen } from '../screens/DashboardScreen';
 import { SimulationScreen } from '../screens/SimulationScreen';
 import { ResultsScreen } from '../screens/ResultsScreen';
@@ -27,7 +28,7 @@ function SimulationStackNavigator() {
     <Stack.Navigator
         id={'simulation-stack' as unknown as undefined}
         screenOptions={{ headerShown: false }}
-        >
+    >
         <Stack.Screen name="Dashboard" component={DashboardScreen} />
         <Stack.Screen name="Simulation" component={SimulationScreen} />
         <Stack.Screen name="Results" component={ResultsScreen} />
@@ -36,13 +37,14 @@ function SimulationStackNavigator() {
 }
 
 function MetasScreen() {
+  const theme = useTheme();
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
         <Appbar.Content title="Minhas Metas" />
       </Appbar.Header>
       <View style={styles.placeholderContainer}>
-        <Text style={styles.placeholderIcon}>🎯</Text>
+        <MaterialCommunityIcons name="target" size={64} color={theme.colors.secondary} style={styles.placeholderIcon} />
         <Text style={styles.placeholderText}>A tela de Metas está em desenvolvimento.</Text>
       </View>
     </View>
@@ -50,13 +52,14 @@ function MetasScreen() {
 }
 
 function EducacaoScreen() {
+  const theme = useTheme();
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
         <Appbar.Content title="Educação Financeira" />
       </Appbar.Header>
       <View style={styles.placeholderContainer}>
-        <Text style={styles.placeholderIcon}>🎓</Text>
+        <MaterialCommunityIcons name="school-outline" size={64} color={theme.colors.secondary} style={styles.placeholderIcon} />
         <Text style={styles.placeholderText}>A tela de Educação está em desenvolvimento.</Text>
       </View>
     </View>
@@ -64,14 +67,17 @@ function EducacaoScreen() {
 }
 
 export function AppNavigator() {
+  const theme = useTheme();
   const [index, setIndex] = useState(0);
+  
+  // Definindo as rotas
   const [routes] = useState([
-    { key: 'dashboard', title: 'Dashboard' },
-    { key: 'metas', title: 'Metas' },
-    { key: 'educacao', title: 'Educação' },
+    { key: 'dashboard', title: 'Início', focusedIcon: 'home-analytics', unfocusedIcon: 'home-analytics' },
+    { key: 'metas', title: 'Metas', focusedIcon: 'target', unfocusedIcon: 'target' },
+    { key: 'educacao', title: 'Aprender', focusedIcon: 'school', unfocusedIcon: 'school-outline' },
   ]);
 
-  const renderScene = ({ route }: { route: { key: string } }) => {
+  const renderScene = ({ route, jumpTo }: any) => {
     switch (route.key) {
       case 'dashboard':
         return <SimulationStackNavigator />;
@@ -84,25 +90,22 @@ export function AppNavigator() {
     }
   };
 
-  const renderIcon = ({ route, focused, color }: any) => {
-    let icon = '📊';
-    if (route.key === 'metas') icon = '🎯';
-    if (route.key === 'educacao') icon = '🎓';
-    return <Text style={{ color, fontSize: focused ? 26 : 24 }}>{icon}</Text>;
-  };
-
   return (
     <NavigationContainer>
       <BottomNavigation
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}
-        renderIcon={renderIcon}
-        renderLabel={({ route, color }) => (
-          <Text style={{ color, fontSize: 12, textAlign: 'center' }}>
-            {routes.find((r) => r.key === route.key)?.title ?? ''}
-          </Text>
-        )}
+        theme={theme}
+        barStyle={{ backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#f0f0f0' }}
+        activeColor={theme.colors.primary}
+        inactiveColor="#999"
+        renderIcon={({ route, focused, color }) => {
+           const routeConfig = routes.find(r => r.key === route.key);
+           const iconName = focused ? routeConfig?.focusedIcon : routeConfig?.unfocusedIcon;
+           // @ts-ignore
+           return <MaterialCommunityIcons name={iconName} size={24} color={color} />;
+        }}
       />
     </NavigationContainer>
   );
