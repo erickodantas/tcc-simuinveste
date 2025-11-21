@@ -1,24 +1,25 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { LineChart } from 'react-native-gifted-charts';
 import { styles } from '../styles/AppStyles';
 import { ResultCard } from '../components/ResultCard';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { SimulationStackParamList } from '../navigation/AppNavigator';
-
 type Props = NativeStackScreenProps<SimulationStackParamList, 'Results'>;
 
 export function ResultsScreen({ navigation, route }: Props) {
   const { simulation, goalAmount, investmentName } = route.params;
   const theme = useTheme();
   const primaryColor = theme.colors.primary;
+  const screenWidth = Dimensions.get('window').width;
+  const chartWidth = screenWidth - 70; 
 
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title="Resultado da Simulação" subtitle={investmentName} />
+        <Appbar.Content title="Resultado da simulação" subtitle={investmentName} />
       </Appbar.Header>
 
       <ScrollView style={styles.content}>
@@ -37,7 +38,11 @@ export function ResultsScreen({ navigation, route }: Props) {
             endFillColor={primaryColor}
             startOpacity={0.2}
             endOpacity={0.01}
+            yAxisLabelWidth={60} 
+            width={chartWidth}
+            adjustToWidth={true} 
             xAxisLabelTextStyle={{ fontSize: 10, color: '#555' }}
+            yAxisTextStyle={{ fontSize: 11, color: '#555' }} 
             noOfSections={5}
             formatYLabel={(value) => {
                 const val = Number(value);
@@ -45,6 +50,9 @@ export function ResultsScreen({ navigation, route }: Props) {
                 return `R$${(val / 1000).toFixed(1)}k`; 
             }}
             rulesColor="rgba(0,0,0,0.1)"
+            hideRules={false}
+            maxValue={simulation.finalAmount * 1.1}
+            mostNegativeValue={0}
           />
         </View>
       </ScrollView>
