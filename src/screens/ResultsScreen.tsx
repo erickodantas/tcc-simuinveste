@@ -28,6 +28,7 @@ export function ResultsScreen({ navigation, route }: Props) {
         <View style={styles.chartContainer}>
           <LineChart
             data={simulation.chartData}
+            areaChart
             height={220}
             isAnimated
             color={primaryColor}
@@ -38,7 +39,11 @@ export function ResultsScreen({ navigation, route }: Props) {
             endOpacity={0.01}
             xAxisLabelTextStyle={{ fontSize: 10, color: '#555' }}
             noOfSections={5}
-            formatYLabel={(value) => `R$${Math.round(Number(value) / 1000)}k`}
+            formatYLabel={(value) => {
+                const val = Number(value);
+                if (val < 1000) return `R$${val}`;
+                return `R$${(val / 1000).toFixed(1)}k`; 
+            }}
             rulesColor="rgba(0,0,0,0.1)"
           />
         </View>
