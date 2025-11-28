@@ -12,18 +12,18 @@ export function calcularSimulacao(
     taxaJuros: number,
 ): ResultadoSimulacao {
     let total = valorInicial;
-    const monthlyInterestRate = Math.pow(1 + taxaJuros / 100, 1 / 12) - 1;
-    const chartData: { value: number; label: string }[] = [{ value: total, label: 'Hoje' }];
+    const taxaJurosMensal = Math.pow(1 + taxaJuros / 100, 1 / 12) - 1;
+    const dadosGrafico: { value: number; label: string }[] = [{ value: total, label: 'Hoje' }];
 
-    for (let month = 1; month <= prazo; month++) {
+    for ( let mes = 1; mes <= prazo; mes++) {
         total += aporteMensal;
-        total *= 1 + monthlyInterestRate;
-        const showLabel = month % 12 === 0 || month === 1 || month === prazo;
-        chartData.push({ value: total, label: showLabel ? `${month}m` : '' });
+        total *= 1 + taxaJurosMensal;
+        const showLabel = mes % 12 === 0 || mes === 1 || mes === prazo;
+        dadosGrafico.push({ value: total, label: showLabel ? `${mes}m` : '' });
     }
 
-    const totalInvested = valorInicial + aporteMensal * prazo;
-    const totalInterest = total - totalInvested;
+    const totalInvestido = valorInicial + aporteMensal * prazo;
+    const totalJuros = total - totalInvestido;
 
-    return { montanteFinal: total, totalInvestido: totalInvested, totalJuros: totalInterest, dadosGrafico: chartData };
+    return { montanteFinal: total, totalInvestido, totalJuros, dadosGrafico};
 }
