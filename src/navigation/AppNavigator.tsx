@@ -4,20 +4,20 @@ import { BottomNavigation, Appbar, useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { DashboardScreen } from '../screens/DashboardScreen';
-import { SimulationScreen } from '../screens/SimulationScreen';
-import { ResultsScreen } from '../screens/ResultsScreen';
+import { TelaDashboard as TelaDashboard } from '../screens/TelaDashboard';
+import { TelaSimulacao as TelaSimulacao } from '../screens/TelaSimulacao';
+import { TelaResultados as TelaResultados } from '../screens/TelaResultados';
 import { styles } from '../styles/AppStyles';
-import type { SimulationResult } from '../utils/calculations';
+import type { ResultadoSimulacao } from '../utils/calculos';
 
 export type SimulationStackParamList = {
   Dashboard: undefined;
-  Simulation: { investmentName: string; interestRate: number };
-  Results: {
-    simulation: SimulationResult;
-    goalAmount: number;
-    interestRate: number;
-    investmentName: string;
+  Simulacao: { nomeInvestimento: string; taxaJuros: number };
+  Resultados: {
+    simulacao: ResultadoSimulacao;
+    valorMeta: number;
+    taxaJuros: number;
+    nomeInvestimento: string;
   };
 };
 
@@ -29,14 +29,14 @@ function SimulationStackNavigator() {
         id={'simulation-stack' as unknown as undefined}
         screenOptions={{ headerShown: false }}
     >
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="Simulation" component={SimulationScreen} />
-        <Stack.Screen name="Results" component={ResultsScreen} />
+        <Stack.Screen name="Dashboard" component={TelaDashboard} />
+        <Stack.Screen name="Simulacao" component={TelaSimulacao} />
+        <Stack.Screen name="Resultados" component={TelaResultados} />
     </Stack.Navigator>
   );
 }
 
-function MetasScreen() {
+function TelaMetas() {
   const theme = useTheme();
   return (
     <View style={styles.container}>
@@ -51,7 +51,7 @@ function MetasScreen() {
   );
 }
 
-function EducacaoScreen() {
+function TelaEducacao() {
   const theme = useTheme();
   return (
     <View style={styles.container}>
@@ -70,7 +70,7 @@ export function AppNavigator() {
   const theme = useTheme();
   const [index, setIndex] = useState(0);
   
-  // Definindo as rotas
+  // definindo rotas
   const [routes] = useState([
     { key: 'dashboard', title: 'Início', focusedIcon: 'home-analytics', unfocusedIcon: 'home-analytics' },
     { key: 'metas', title: 'Metas', focusedIcon: 'target', unfocusedIcon: 'target' },
@@ -82,9 +82,9 @@ export function AppNavigator() {
       case 'dashboard':
         return <SimulationStackNavigator />;
       case 'metas':
-        return <MetasScreen />;
+        return <TelaMetas />;
       case 'educacao':
-        return <EducacaoScreen />;
+        return <TelaEducacao />;
       default:
         return null;
     }
@@ -103,8 +103,7 @@ export function AppNavigator() {
         renderIcon={({ route, focused, color }) => {
            const routeConfig = routes.find(r => r.key === route.key);
            const iconName = focused ? routeConfig?.focusedIcon : routeConfig?.unfocusedIcon;
-           // @ts-ignore
-           return <MaterialCommunityIcons name={iconName} size={24} color={color} />;
+           return <MaterialCommunityIcons name={iconName as any} size={24} color={color} />;
         }}
       />
     </NavigationContainer>

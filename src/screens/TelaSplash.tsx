@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-export function CustomSplashScreen() {
+export function TelaSplash() {
   const theme = useTheme();
 
   return (

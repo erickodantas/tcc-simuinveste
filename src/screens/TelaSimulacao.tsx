@@ -2,34 +2,34 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Appbar, TextInput, Button } from 'react-native-paper';
 import { styles } from '../styles/AppStyles';
-import { calculateSimulation } from '../utils/calculations';
+import { calcularSimulacao } from '../utils/calculos';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { SimulationStackParamList } from '../navigation/AppNavigator';
 
-type Props = NativeStackScreenProps<SimulationStackParamList, 'Simulation'>;
+type Props = NativeStackScreenProps<SimulationStackParamList, 'Simulacao'>;
 
-export function SimulationScreen({ navigation, route }: Props) {
-  const { investmentName, interestRate } = route.params;
-  const [initialAmount, setInitialAmount] = useState('0');
-  const [goalAmount, setGoalAmount] = useState('');
-  const [monthlyContribution, setMonthlyContribution] = useState('');
-  const [period, setPeriod] = useState('');
+export function TelaSimulacao({ navigation, route }: Props) {
+  const { nomeInvestimento, taxaJuros } = route.params;
+  const [valorInicial, setValorInicial] = useState('0');
+  const [valorMeta, setValorMeta] = useState('');
+  const [aporteMensal, setAporteMensal] = useState('');
+  const [prazo, setPrazo] = useState('');
 
   const handleSimulate = () => {
-    if (!goalAmount || !monthlyContribution || !period) return;
+    if (!valorMeta || !aporteMensal || !prazo) return;
 
-    const simInitial = parseFloat(initialAmount.replace(',', '.')) || 0;
-    const simContribution = parseFloat(monthlyContribution.replace(',', '.')) || 0;
-    const simPeriod = parseInt(period, 10) || 0;
-    const simGoal = parseFloat(goalAmount.replace(',', '.')) || 0;
+    const simInicial = parseFloat(valorInicial.replace(',', '.')) || 0;
+    const simAporte = parseFloat(aporteMensal.replace(',', '.')) || 0;
+    const simPrazo = parseInt(prazo, 10) || 0;
+    const simMeta = parseFloat(valorMeta.replace(',', '.')) || 0;
 
-    const simulationData = calculateSimulation(simInitial, simContribution, simPeriod, interestRate);
+    const dadosSimulacao = calcularSimulacao(simInicial, simAporte, simPrazo, taxaJuros);
 
-    navigation.navigate('Results', {
-      simulation: simulationData,
-      goalAmount: simGoal,
-      interestRate,
-      investmentName,
+    navigation.navigate('Resultados', {
+      simulacao: dadosSimulacao,
+      valorMeta: simMeta,
+      taxaJuros: taxaJuros,
+      nomeInvestimento: nomeInvestimento,
     });
   };
 
@@ -37,7 +37,7 @@ export function SimulationScreen({ navigation, route }: Props) {
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title={investmentName} subtitle={`Taxa: ${interestRate.toFixed(2)}% a.a.`} />
+        <Appbar.Content title={nomeInvestimento} subtitle={`Taxa: ${taxaJuros.toFixed(2)}% a.a.`} />
       </Appbar.Header>
 
       <ScrollView style={styles.content}>
@@ -45,32 +45,32 @@ export function SimulationScreen({ navigation, route }: Props) {
 
         <TextInput
           label="Valor inicial (R$)"
-          value={initialAmount}
-          onChangeText={setInitialAmount}
+          value={valorInicial}
+          onChangeText={setValorInicial}
           keyboardType="numeric"
           mode="outlined"
           style={styles.input}
         />
         <TextInput
           label="Valor final desejado (R$)"
-          value={goalAmount}
-          onChangeText={setGoalAmount}
+          value={valorMeta}
+          onChangeText={setValorMeta}
           keyboardType="numeric"
           mode="outlined"
           style={styles.input}
         />
         <TextInput
           label="Aporte mensal (R$)"
-          value={monthlyContribution}
-          onChangeText={setMonthlyContribution}
+          value={aporteMensal}
+          onChangeText={setAporteMensal}
           keyboardType="numeric"
           mode="outlined"
           style={styles.input}
         />
         <TextInput
           label="Prazo (em meses)"
-          value={period}
-          onChangeText={setPeriod}
+          value={prazo}
+          onChangeText={setPrazo}
           keyboardType="numeric"
           mode="outlined"
           style={styles.input}

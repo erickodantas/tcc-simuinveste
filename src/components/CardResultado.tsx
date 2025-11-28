@@ -3,14 +3,14 @@ import { Text } from 'react-native';
 import { Card, useTheme } from 'react-native-paper';
 import { styles } from '../styles/AppStyles';
 import { formatCurrency } from '../utils/formatters';
-import { SimulationResult } from '../utils/calculations';
+import { ResultadoSimulacao } from '../utils/calculos';
 
 interface Props {
-    simulation: SimulationResult;
-    goalAmount: number;
+    simulacao: ResultadoSimulacao;
+    valorMeta: number;
 }
 
-export function ResultCard({ simulation, goalAmount }: Props) {
+export function CardResultado({ simulacao: simulacao, valorMeta: valorMeta }: Props) {
     const theme = useTheme();
 
     return (
@@ -18,14 +18,14 @@ export function ResultCard({ simulation, goalAmount }: Props) {
             <Card.Content>
                 <Text style={styles.resultLabel}>Valor final acumulado:</Text>
                 <Text style={[styles.resultValue, { color: theme.colors.primary }]}>
-                    {formatCurrency(simulation.finalAmount)}
+                    {formatCurrency(simulacao.montanteFinal)}
                 </Text>
                 <Text style={styles.detailLabel}>Meta desejada:</Text>
-                <Text style={styles.detailValue}>{formatCurrency(goalAmount)}</Text>
+                <Text style={styles.detailValue}>{formatCurrency(valorMeta)}</Text>
                 <Text style={styles.detailLabel}>Total aportado:</Text>
-                <Text style={styles.detailValue}>{formatCurrency(simulation.totalInvested)}</Text>
+                <Text style={styles.detailValue}>{formatCurrency(simulacao.totalInvestido)}</Text>
                 <Text style={styles.detailLabel}>Total em juros:</Text>
-                <Text style={styles.detailValue}>{formatCurrency(simulation.totalInterest)}</Text>
+                <Text style={styles.detailValue}>{formatCurrency(simulacao.totalJuros)}</Text>
             </Card.Content>
         </Card>
     );

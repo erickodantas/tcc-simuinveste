@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
 import * as SplashScreen from 'expo-splash-screen';
 import { AppNavigator } from './src/navigation/AppNavigator';
-import { CustomSplashScreen } from './src/screens/CustomSplashScreen'; // Importamos a tela
+import { TelaSplash } from './src/screens/TelaSplash'; // Importamos a tela
 
 const theme = {
   ...DefaultTheme,
@@ -52,7 +52,7 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <PaperProvider theme={theme}>
         {}
-        {showCustomSplash ? <CustomSplashScreen /> : <AppNavigator />}
+        {showCustomSplash ? <TelaSplash /> : <AppNavigator />}
       </PaperProvider>
     </View>
   );
