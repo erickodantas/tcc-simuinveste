@@ -1,18 +1,21 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { View } from 'react-native';
-import { Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
-import * as SplashScreen from 'expo-splash-screen';
-import { AppNavigator } from './src/navigation/AppNavigator';
-import { TelaSplash } from './src/screens/TelaSplash'; // Importamos a tela
+import React, { useEffect, useCallback, useState } from "react";
+import { View } from "react-native";
+import {
+  Provider as PaperProvider,
+  MD3LightTheme as DefaultTheme,
+} from "react-native-paper";
+import * as SplashScreen from "expo-splash-screen";
+import { AppNavigator } from "../navigation/AppNavigator";
+import { TelaSplash } from "./screens/TelaSplash"; // Importamos a tela
 
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#69c6dd',
-    secondary: '#4a9cb0',
-    background: '#f5f5f5',
-    surface: '#ffffff',
+    primary: "#69c6dd",
+    secondary: "#4a9cb0",
+    background: "#f5f5f5",
+    surface: "#ffffff",
   },
 };
 
@@ -25,7 +28,7 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -39,7 +42,7 @@ export default function App() {
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
-      
+
       setShowCustomSplash(false);
     }
   }, [appIsReady]);
