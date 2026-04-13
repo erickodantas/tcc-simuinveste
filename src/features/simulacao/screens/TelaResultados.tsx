@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, ScrollView, Dimensions } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { LineChart } from 'react-native-gifted-charts';
-import { styles } from '../styles/AppStyles';
+import { styles } from '../../../common/styles/AppStyles';
 import { CardResultado } from '../components/CardResultado';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { SimulationStackParamList } from '../navigation/AppNavigator';
+import type { SimulationStackParamList } from '../../../navigation/AppNavigator';
 
 type Props = NativeStackScreenProps<SimulationStackParamList, 'Resultados'>;
 

@@ -8,7 +8,7 @@ export function TelaSplash() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Image
-        source={require('../assets/logo.png')} 
+        source={require('../../assets/logo.png')}
         style={styles.logo}
         resizeMode="contain"
       />

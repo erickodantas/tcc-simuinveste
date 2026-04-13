@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { styles } from '../styles/AppStyles';
-import { getCDIRate as getTaxaCdi } from '../services/api';
+import { styles } from '../../../common/styles/AppStyles';
+import { getCDIRate as getTaxaCdi } from '../../../common/services/api';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { SimulationStackParamList } from '../navigation/AppNavigator';
+import type { SimulationStackParamList } from '../../../navigation/AppNavigator';
 
 type Props = NativeStackScreenProps<SimulationStackParamList, 'Dashboard'>;
 

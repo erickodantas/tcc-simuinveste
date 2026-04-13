@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { BottomNavigation, Appbar, useTheme } from "react-native-paper";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TelaDashboard as TelaDashboard } from "../features/dashboard/screens/TelaDashboard";
-import { TelaSimulacao as TelaSimulacao } from "../features/simulacao/screens/TelaSimulacao";
-import { TelaResultados as TelaResultados } from "../features/simulacao/screens/TelaResultados";
-import { styles } from "../common/styles/AppStyles";
-import type { ResultadoSimulacao } from "../common/services/calculos";
+import React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Appbar, useTheme } from 'react-native-paper';
 
+// Imports atualizados para a nova arquitetura Feature-based
+import { TelaDashboard } from '../features/dashboard/screens/TelaDashboard';
+import { TelaSimulacao } from '../features/simulacao/screens/TelaSimulacao';
+import { TelaResultados } from '../features/simulacao/screens/TelaResultados';
+import { TelaEducacaoInicial } from '../features/educacao/screens/TelaEducacao';
+
+import { styles } from '../common/styles/AppStyles';
+import type { ResultadoSimulacao } from '../common/services/calculos';
+
+// --- Tipagens de Navegação ---
 export type SimulationStackParamList = {
   Dashboard: undefined;
   Simulacao: { nomeInvestimento: string; taxaJuros: number };
@@ -21,132 +27,87 @@ export type SimulationStackParamList = {
   };
 };
 
-const Stack = createNativeStackNavigator<SimulationStackParamList>();
+export type EducationStackParamList = {
+  EducacaoInicial: undefined;
+  Flashcards: { trilhaId: string };
+  Quiz: { trilhaId: string };
+};
 
+// --- Stack Navigators ---
+const SimStack = createNativeStackNavigator<SimulationStackParamList>();
 function SimulationStackNavigator() {
   return (
-    <Stack.Navigator
-      id={"simulation-stack" as unknown as undefined}
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Dashboard" component={TelaDashboard} />
-      <Stack.Screen name="Simulacao" component={TelaSimulacao} />
-      <Stack.Screen name="Resultados" component={TelaResultados} />
-    </Stack.Navigator>
+    <SimStack.Navigator screenOptions={{ headerShown: false }}>
+        <SimStack.Screen name="Dashboard" component={TelaDashboard} />
+        <SimStack.Screen name="Simulacao" component={TelaSimulacao} />
+        <SimStack.Screen name="Resultados" component={TelaResultados} />
+    </SimStack.Navigator>
   );
 }
 
+const EdStack = createNativeStackNavigator<EducationStackParamList>();
+function EducationStackNavigator() {
+  return (
+    <EdStack.Navigator screenOptions={{ headerShown: false }}>
+        <EdStack.Screen name="EducacaoInicial" component={TelaEducacaoInicial} />
+        {/* Futuras telas de Flashcards e Quiz virão aqui */}
+    </EdStack.Navigator>
+  );
+}
+
+// Placeholder para Metas
 function TelaMetas() {
   const theme = useTheme();
   return (
     <View style={styles.container}>
-      <Appbar.Header style={styles.header}>
+      <Appbar.Header style={{ backgroundColor: '#fff', elevation: 0 }}>
         <Appbar.Content title="Minhas Metas" />
       </Appbar.Header>
       <View style={styles.placeholderContainer}>
-        <MaterialCommunityIcons
-          name="target"
-          size={64}
-          color={theme.colors.secondary}
-          style={styles.placeholderIcon}
-        />
-        <Text style={styles.placeholderText}>
-          A tela de Metas está em desenvolvimento.
-        </Text>
+        <MaterialCommunityIcons name="target" size={64} color={theme.colors.secondary} style={styles.placeholderIcon} />
+        <Text style={styles.placeholderText}>A tela de Metas está em desenvolvimento.</Text>
       </View>
     </View>
   );
 }
 
-function TelaEducacao() {
-  const theme = useTheme();
-  return (
-    <View style={styles.container}>
-      <Appbar.Header style={styles.header}>
-        <Appbar.Content title="Educação Financeira" />
-      </Appbar.Header>
-      <View style={styles.placeholderContainer}>
-        <MaterialCommunityIcons
-          name="school-outline"
-          size={64}
-          color={theme.colors.secondary}
-          style={styles.placeholderIcon}
-        />
-        <Text style={styles.placeholderText}>
-          A tela de Educação está em desenvolvimento.
-        </Text>
-      </View>
-    </View>
-  );
-}
+// --- Navegação Principal (Tabs) ---
+const Tab = createBottomTabNavigator();
 
 export function AppNavigator() {
   const theme = useTheme();
-  const [index, setIndex] = useState(0);
-
-  // definindo rotas
-  const [routes] = useState([
-    {
-      key: "dashboard",
-      title: "Início",
-      focusedIcon: "home-analytics",
-      unfocusedIcon: "home-analytics",
-    },
-    {
-      key: "metas",
-      title: "Metas",
-      focusedIcon: "target",
-      unfocusedIcon: "target",
-    },
-    {
-      key: "educacao",
-      title: "Aprender",
-      focusedIcon: "school",
-      unfocusedIcon: "school-outline",
-    },
-  ]);
-
-  const renderScene = ({ route, jumpTo }: any) => {
-    switch (route.key) {
-      case "dashboard":
-        return <SimulationStackNavigator />;
-      case "metas":
-        return <TelaMetas />;
-      case "educacao":
-        return <TelaEducacao />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <NavigationContainer>
-      <BottomNavigation
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-        theme={theme}
-        barStyle={{
-          backgroundColor: "#fff",
-          borderTopWidth: 1,
-          borderTopColor: "#f0f0f0",
-        }}
-        activeColor={theme.colors.primary}
-        inactiveColor="#999"
-        renderIcon={({ route, focused, color }) => {
-          const routeConfig = routes.find((r) => r.key === route.key);
-          const iconName = focused
-            ? routeConfig?.focusedIcon
-            : routeConfig?.unfocusedIcon;
-          return (
-            <MaterialCommunityIcons
-              name={iconName as any}
-              size={24}
-              color={color}
-            />
-          );
-        }}
-      />
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Início') {
+              iconName = focused ? 'home-analytics' : 'home-analytics';
+            } else if (route.name === 'Metas') {
+              iconName = focused ? 'target' : 'target';
+            } else if (route.name === 'Aprender') {
+              iconName = focused ? 'school' : 'school-outline';
+            }
+
+            return <MaterialCommunityIcons name={iconName as any} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: '#999',
+          tabBarStyle: {
+            backgroundColor: '#fff',
+            borderTopWidth: 1,
+            borderTopColor: '#f0f0f0',
+          },
+        })}
+      >
+        <Tab.Screen name="Início" component={SimulationStackNavigator} />
+        <Tab.Screen name="Metas" component={TelaMetas} />
+        <Tab.Screen name="Aprender" component={EducationStackNavigator} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

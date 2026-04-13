@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Appbar, TextInput, Button } from 'react-native-paper';
-import { styles } from '../styles/AppStyles';
-import { calcularSimulacao } from '../utils/calculos';
+import { styles } from '../../../common/styles/AppStyles';
+import { calcularSimulacao } from '../../../common/services/calculos';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { SimulationStackParamList } from '../navigation/AppNavigator';
+import type { SimulationStackParamList } from '../../../navigation/AppNavigator';
 
 type Props = NativeStackScreenProps<SimulationStackParamList, 'Simulacao'>;
 
