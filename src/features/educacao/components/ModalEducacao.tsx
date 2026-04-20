@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useTheme } from "react-native-paper";
-import { ConteudoEducacional } from "../data/mockEducacao";
+import { ConteudoEducacional } from "../types/ConteudoEducacional";
 import { styles } from "../styles/EducacaoStyles";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
   aoAcertarQuiz?: (id: string) => void;
 }
 
-export function ModalConteudoAnimado({
+export function ModalEducacao({
   visivel,
   conteudo,
   aoFechar,
@@ -28,10 +28,10 @@ export function ModalConteudoAnimado({
 }: Props) {
   const theme = useTheme();
   const animacaoFlip = useRef(new Animated.Value(0)).current;
+  const animacaoTick = useRef(0);
   const [virado, setVirado] = useState(false);
   const [opcaoSelecionada, setOpcaoSelecionada] = useState<number | null>(null);
   const [animando, setAnimando] = useState(false);
-
 
   const frontAnimatedStyle = useMemo(
     () => ({
@@ -63,30 +63,34 @@ export function ModalConteudoAnimado({
 
   useEffect(() => {
     if (visivel && conteudo) {
-      const jaAcertou = quizJaAcertado || false;
+      const jaAcertou = quizJaAcertado ?? false;
+      animacaoFlip.stopAnimation();
+      animacaoFlip.setValue(jaAcertou ? 180 : 0);
       setVirado(jaAcertou);
       setOpcaoSelecionada(
         jaAcertou && conteudo.tipo === "quiz"
           ? conteudo.indiceRespostaCorreta!
           : null,
       );
-      animacaoFlip.setValue(jaAcertou ? 180 : 0);
       setAnimando(false);
     }
   }, [visivel, conteudo?.id]);
   if (!conteudo) return null;
 
   const flipCard = (callback?: () => void) => {
-    setAnimando(true); // 1. Dá a ordem para tirar a sombra
+    const tickAtual = ++animacaoTick.current;
+
+    setAnimando(true);
     animacaoFlip.stopAnimation();
+
     setTimeout(() => {
       Animated.spring(animacaoFlip, {
         toValue: virado ? 0 : 180,
         friction: 8,
         tension: 10,
         useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) {
+      }).start(() => {
+        if (animacaoTick.current === tickAtual) {
           setAnimando(false);
           if (callback) callback();
         }
@@ -131,7 +135,6 @@ export function ModalConteudoAnimado({
                   { elevation: animando ? 0 : 5 },
                 ]}
               >
-                {/* Container Flexível para o Texto (Empurra o resto para baixo) */}
                 <View style={styles.centroCard}>
                   <Text style={styles.tituloSecundario}>
                     {isQuiz ? "Quiz" : "Flashcard"}
@@ -139,7 +142,6 @@ export function ModalConteudoAnimado({
                   <Text style={styles.pergunta}>{conteudo.pergunta}</Text>
                 </View>
 
-                {/* Container do Rodapé (Fixo na parte inferior) */}
                 <View style={styles.rodapeCard}>
                   {isQuiz ? (
                     <View style={styles.opcoesContainer}>

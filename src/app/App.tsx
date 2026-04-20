@@ -6,7 +6,7 @@ import {
 } from "react-native-paper";
 import * as SplashScreen from "expo-splash-screen";
 import { AppNavigator } from "../navigation/AppNavigator";
-import { TelaSplash } from "./screens/TelaSplash"; // Importamos a tela
+import { TelaSplash } from "./screens/TelaSplash";
 
 const theme = {
   ...DefaultTheme,
@@ -23,7 +23,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [showCustomSplash, setShowCustomSplash] = useState(true); // Controle da nossa Splash PNG
+  const [showCustomSplash, setShowCustomSplash] = useState(true);
 
   useEffect(() => {
     async function prepare() {

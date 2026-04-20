@@ -5,17 +5,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Appbar, useTheme } from 'react-native-paper';
-
-// Imports atualizados para a nova arquitetura Feature-based
 import { TelaDashboard } from '../features/dashboard/screens/TelaDashboard';
 import { TelaSimulacao } from '../features/simulacao/screens/TelaSimulacao';
 import { TelaResultados } from '../features/simulacao/screens/TelaResultados';
 import { TelaEducacaoInicial } from '../features/educacao/screens/TelaEducacao';
 
 import { styles } from '../common/styles/AppStyles';
-import type { ResultadoSimulacao } from '../common/services/calculos';
+import type { ResultadoSimulacao } from '../common/types/ResultadoSimulacao';
 
-// --- Tipagens de Navegação ---
+//Tipagens de Navegação
 export type SimulationStackParamList = {
   Dashboard: undefined;
   Simulacao: { nomeInvestimento: string; taxaJuros: number };
@@ -33,7 +31,7 @@ export type EducationStackParamList = {
   Quiz: { trilhaId: string };
 };
 
-// --- Stack Navigators ---
+//Stack navigators
 const SimStack = createNativeStackNavigator<SimulationStackParamList>();
 function SimulationStackNavigator() {
   return (
@@ -60,7 +58,7 @@ function TelaMetas() {
   const theme = useTheme();
   return (
     <View style={styles.container}>
-      <Appbar.Header style={{ backgroundColor: '#fff', elevation: 0 }}>
+      <Appbar.Header style={{ backgroundColor: "#fff", elevation: 0 }}>
         <Appbar.Content title="Minhas Metas" />
       </Appbar.Header>
       <View style={styles.placeholderContainer}>
@@ -71,7 +69,7 @@ function TelaMetas() {
   );
 }
 
-// --- Navegação Principal (Tabs) ---
+//Navegação principal tabs
 const Tab = createBottomTabNavigator();
 
 export function AppNavigator() {

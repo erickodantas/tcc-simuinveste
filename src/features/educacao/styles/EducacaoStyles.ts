@@ -83,7 +83,6 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#333',
-    // Ajuste ou remova a margem para não deslocar do centro vertical
     marginVertical: 10, 
   },
   resposta: {
@@ -137,7 +136,6 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginTop: 16,
   },
-  // NOVOS ESTILOS
   sucessoContainer: {
     alignItems: "center",
     justifyContent: "center",

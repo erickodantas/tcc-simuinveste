@@ -3,7 +3,7 @@ import { Text } from "react-native";
 import { Card, useTheme } from "react-native-paper";
 import { styles } from "../../../common/styles/AppStyles";
 import { formatCurrency } from "../../../common/utils/formatters";
-import { ResultadoSimulacao } from "../../../common/services/calculos";
+import { ResultadoSimulacao } from "../../../common/types/ResultadoSimulacao";
 
 interface Props {
   simulacao: ResultadoSimulacao;

@@ -1,21 +1,7 @@
+import { ConteudoEducacional } from '../types/ConteudoEducacional';
+import { SecaoEducacional } from '../types/SecaoEducacional';
+
 export type TipoConteudo = 'flashcard' | 'quiz';
-
-export interface ConteudoEducacional {
-  id: string;
-  tipo: TipoConteudo;
-  titulo: string;
-  pergunta: string;
-  resposta?: string;
-  opcoes?: string[];
-  indiceRespostaCorreta?: number;
-  explicacaoErro?: string;
-}
-
-export interface SecaoEducacional {
-  id: string;
-  titulo: string;
-  conteudos: ConteudoEducacional[];
-}
 
 export const secoesEducacionais: SecaoEducacional[] = [
   {
@@ -53,7 +39,35 @@ export const secoesEducacionais: SecaoEducacional[] = [
   },
   {
     id: 'sec-2',
-    titulo: 'Renda Variável...',
-    conteudos: []
+    titulo: 'Renda Variável',
+    conteudos: [
+      {
+        id: 'c4',
+        tipo: 'flashcard',
+        titulo: 'O que são Ações?',
+        pergunta: 'O que significa comprar uma ação de uma empresa?',
+        resposta: 'Significa comprar uma pequena "fatia" dessa empresa. Você se torna sócio e passa a participar dos lucros (dividendos) e dos riscos do negócio.'
+      },
+      {
+        id: 'c5',
+        tipo: 'flashcard',
+        titulo: 'A Bolsa de Valores',
+        pergunta: 'O que é a B3?',
+        resposta: 'É a bolsa de valores oficial do Brasil. É o ambiente onde ocorre a compra e venda de ações e outros ativos financeiros.'
+      },
+      {
+        id: 'c6',
+        tipo: 'quiz',
+        titulo: 'Risco e Retorno',
+        pergunta: 'Na renda variável, qual é a relação clássica entre risco e retorno esperado?',
+        opcoes: [
+          'Quanto maior o risco, menor o retorno esperado.',
+          'O risco e o retorno são fixos e garantidos.',
+          'Quanto maior o risco assumido, maior o potencial de retorno.'
+        ],
+        indiceRespostaCorreta: 2,
+        explicacaoErro: 'Na renda variável, para buscar retornos mais altos, o investidor geralmente precisa aceitar níveis maiores de risco de variação de preço. Não há garantias.'
+      }
+    ]
   }
 ];

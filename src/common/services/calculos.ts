@@ -1,9 +1,4 @@
-export type ResultadoSimulacao = {
-    montanteFinal: number;
-    totalInvestido: number;
-    totalJuros: number;
-    dadosGrafico: { value: number; label: string }[];
-};
+import type { ResultadoSimulacao } from '../types/ResultadoSimulacao';
 
 export function calcularSimulacao(
     valorInicial: number,
