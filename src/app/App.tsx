@@ -7,6 +7,7 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import { AppNavigator } from "../navigation/AppNavigator";
 import { TelaSplash } from "./screens/TelaSplash";
+import { ProgressoProvider } from "../contexts/ProgressoContext";
 
 const theme = {
   ...DefaultTheme,
@@ -52,11 +53,13 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <PaperProvider theme={theme}>
-        {}
-        {showCustomSplash ? <TelaSplash /> : <AppNavigator />}
-      </PaperProvider>
-    </View>
+    <ProgressoProvider>
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <PaperProvider theme={theme}>
+          {}
+          {showCustomSplash ? <TelaSplash /> : <AppNavigator />}
+        </PaperProvider>
+      </View>
+    </ProgressoProvider>
   );
 }

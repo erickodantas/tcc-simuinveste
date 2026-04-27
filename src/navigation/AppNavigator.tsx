@@ -9,7 +9,7 @@ import { TelaDashboard } from '../features/dashboard/screens/TelaDashboard';
 import { TelaSimulacao } from '../features/simulacao/screens/TelaSimulacao';
 import { TelaResultados } from '../features/simulacao/screens/TelaResultados';
 import { TelaEducacaoInicial } from '../features/educacao/screens/TelaEducacao';
-
+import { useProgresso } from '../contexts/ProgressoContext';
 import { styles } from '../common/styles/AppStyles';
 import type { ResultadoSimulacao } from '../common/types/ResultadoSimulacao';
 
@@ -74,7 +74,12 @@ const Tab = createBottomTabNavigator();
 
 export function AppNavigator() {
   const theme = useTheme();
-
+  const { nivelAtual } = useProgresso();
+  const headerRightGlobal = () => (
+    <View style={{ marginRight: 16, backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8 }}>
+      <Text style={{ fontWeight: 'bold', color: '#333' }}>Nível: {nivelAtual}</Text>
+    </View>
+  );
   return (
     <NavigationContainer>
       <Tab.Navigator

@@ -7,6 +7,7 @@ export const secoesEducacionais: SecaoEducacional[] = [
   {
     id: 'sec-1',
     titulo: 'Renda Fixa',
+    nivel: 1,
     conteudos: [
       {
         id: 'c1',
@@ -40,6 +41,7 @@ export const secoesEducacionais: SecaoEducacional[] = [
   {
     id: 'sec-2',
     titulo: 'Renda Variável',
+    nivel: 2,
     conteudos: [
       {
         id: 'c4',

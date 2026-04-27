@@ -148,4 +148,21 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     fontStyle: "italic",
   },
+  cabecalhoSecao: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 8,
+    elevation: 1,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  conteudoGaveta: {
+    paddingLeft: 16,
+    marginTop: 8,
+  },
 });
