@@ -18,10 +18,10 @@ export function TelaSimulacao({ navigation, route }: Props) {
   const handleSimulate = () => {
     if (!valorMeta || !aporteMensal || !prazo) return;
 
-    const simInicial = parseFloat(valorInicial.replace(',', '.')) || 0;
-    const simAporte = parseFloat(aporteMensal.replace(',', '.')) || 0;
+    const simInicial = parseFloat(valorInicial.replace(/,/g, '.')) || 0;
+    const simAporte = parseFloat(aporteMensal.replace(/,/g, '.')) || 0;
+    const simMeta = parseFloat(valorMeta.replace(/,/g, '.')) || 0;
     const simPrazo = parseInt(prazo, 10) || 0;
-    const simMeta = parseFloat(valorMeta.replace(',', '.')) || 0;
 
     const dadosSimulacao = calcularSimulacao(simInicial, simAporte, simPrazo, taxaJuros);
 
@@ -35,11 +35,6 @@ export function TelaSimulacao({ navigation, route }: Props) {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header style={styles.header}>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title={nomeInvestimento} subtitle={`Taxa: ${taxaJuros.toFixed(2)}% a.a.`} />
-      </Appbar.Header>
-
       <ScrollView style={styles.content}>
         <Text style={styles.title}>Defina seus valores</Text>
 

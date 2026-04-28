@@ -1,7 +1,6 @@
 import { ConteudoEducacional } from '../types/ConteudoEducacional';
 import { SecaoEducacional } from '../types/SecaoEducacional';
-
-export type TipoConteudo = 'flashcard' | 'quiz';
+import { TipoConteudo } from '../types/ConteudoEducacional';
 
 export const secoesEducacionais: SecaoEducacional[] = [
   {

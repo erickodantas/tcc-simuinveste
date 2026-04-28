@@ -58,10 +58,6 @@ export function TelaEducacaoInicial() {
 
   return (
     <View style={globalStyles.container}>
-      <Appbar.Header style={{ backgroundColor: '#fff', elevation: 0 }}>
-        <Appbar.Content title="Aprender" />
-      </Appbar.Header>
-
       <ScrollView style={styles.scroll}>
         {secoesEducacionais.map((secao) => {
           const isBloqueada = secao.nivel > nivelAtual + 1;

@@ -22,11 +22,6 @@ export function TelaResultados({ navigation, route }: Props) {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header style={styles.header}>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title="Resultado da Simulação" subtitle={nomeInvestimento} />
-      </Appbar.Header>
-
       <ScrollView style={styles.content}>
         <CardResultado simulacao={simulacao} valorMeta={valorMeta} />
 

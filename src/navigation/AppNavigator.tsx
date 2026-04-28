@@ -13,7 +13,6 @@ import { useProgresso } from '../contexts/ProgressoContext';
 import { styles } from '../common/styles/AppStyles';
 import type { ResultadoSimulacao } from '../common/types/ResultadoSimulacao';
 
-//Tipagens de Navegação
 export type SimulationStackParamList = {
   Dashboard: undefined;
   Simulacao: { nomeInvestimento: string; taxaJuros: number };
@@ -27,11 +26,8 @@ export type SimulationStackParamList = {
 
 export type EducationStackParamList = {
   EducacaoInicial: undefined;
-  Flashcards: { trilhaId: string };
-  Quiz: { trilhaId: string };
 };
 
-//Stack navigators
 const SimStack = createNativeStackNavigator<SimulationStackParamList>();
 function SimulationStackNavigator() {
   return (
@@ -48,19 +44,14 @@ function EducationStackNavigator() {
   return (
     <EdStack.Navigator screenOptions={{ headerShown: false }}>
         <EdStack.Screen name="EducacaoInicial" component={TelaEducacaoInicial} />
-        {/* Futuras telas de Flashcards e Quiz virão aqui */}
     </EdStack.Navigator>
   );
 }
 
-// Placeholder para Metas
 function TelaMetas() {
   const theme = useTheme();
   return (
     <View style={styles.container}>
-      <Appbar.Header style={{ backgroundColor: "#fff", elevation: 0 }}>
-        <Appbar.Content title="Minhas Metas" />
-      </Appbar.Header>
       <View style={styles.placeholderContainer}>
         <MaterialCommunityIcons name="target" size={64} color={theme.colors.secondary} style={styles.placeholderIcon} />
         <Text style={styles.placeholderText}>A tela de Metas está em desenvolvimento.</Text>
@@ -69,33 +60,38 @@ function TelaMetas() {
   );
 }
 
-//Navegação principal tabs
 const Tab = createBottomTabNavigator();
+
+const ICON_MAP: Record<string, { focused: string; unfocused: string }> = {
+  'Início':   { focused: 'home-analytics', unfocused: 'home-analytics' },
+  'Metas':    { focused: 'target',         unfocused: 'target' },
+  'Aprender': { focused: 'school',       unfocused: 'school-outline' },
+};
 
 export function AppNavigator() {
   const theme = useTheme();
   const { nivelAtual } = useProgresso();
+
   const headerRightGlobal = () => (
-    <View style={{ marginRight: 16, backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8 }}>
-      <Text style={{ fontWeight: 'bold', color: '#333' }}>Nível: {nivelAtual}</Text>
+    <View style={{ marginRight: 16, backgroundColor: '#f0f0f0', paddingVertical: 4, paddingHorizontal: 12, borderRadius: 20 }}>
+      <Text style={{ fontWeight: 'bold', color: theme.colors.primary, fontSize: 12 }}>
+        Nível: {nivelAtual}
+      </Text>
     </View>
   );
+
   return (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          headerShown: false,
+          headerShown: true,
+          headerRight: headerRightGlobal,
+          headerStyle: { backgroundColor: '#fff', elevation: 0, shadowOpacity: 0 },
+          headerTitleStyle: { fontWeight: 'bold' },
+          
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Início') {
-              iconName = focused ? 'home-analytics' : 'home-analytics';
-            } else if (route.name === 'Metas') {
-              iconName = focused ? 'target' : 'target';
-            } else if (route.name === 'Aprender') {
-              iconName = focused ? 'school' : 'school-outline';
-            }
-
+            const icons = ICON_MAP[route.name];
+            const iconName = focused ? icons.focused : icons.unfocused;
             return <MaterialCommunityIcons name={iconName as any} size={size} color={color} />;
           },
           tabBarActiveTintColor: theme.colors.primary,

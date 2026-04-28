@@ -1,4 +1,4 @@
-import { TipoConteudo } from '../data/mockEducacao';
+export type TipoConteudo = 'flashcard' | 'quiz';
 
 export interface ConteudoEducacional {
   id: string;
