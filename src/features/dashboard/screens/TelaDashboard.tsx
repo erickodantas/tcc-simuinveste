@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
 import { styles } from '../../../common/styles/AppStyles';
-import { carregarInvestimentos } from '../services/investimentosService';
 import { Investimento } from '../types/Investimento';
 import { useProgresso } from '../../../contexts/ProgressoContext';
+import { useInvestimentos } from '../../../contexts/InvestimentosContext';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { SimulationStackParamList } from '../../../navigation/AppNavigator';
 
@@ -12,23 +13,18 @@ type Props = NativeStackScreenProps<SimulationStackParamList, 'Dashboard'>;
 
 export function TelaDashboard({ navigation }: Props) {
   const { nivelAtual } = useProgresso();
-  const [investimentos, setInvestimentos] = useState<Investimento[]>([]);
-  const [loading, setLoading ] = useState(true);
-
-  useEffect(() => {
-    const fetchInvestimentos = async () => {
-      setLoading(true);
-      const dados = await carregarInvestimentos();
-      setInvestimentos(dados);
-      setLoading(false);
-    };
-    fetchInvestimentos();
-  }, []);
+  const { investimentos, loading, erro } = useInvestimentos();
+  const [erroBloqueio, setErroBloqueio] = useState(false);
 
   const handleInvestmentPress = (inv: Investimento) => {
-    navigation.navigate('Simulacao', { 
-      nomeInvestimento: inv.nome, 
-      taxaJuros: inv.taxaJurosAnual 
+    if (inv.nivelNecessario > nivelAtual) {
+      setErroBloqueio(true);
+      return;
+    }
+    setErroBloqueio(false);
+    navigation.navigate('Simulacao', {
+      nomeInvestimento: inv.nome,
+      taxaJuros: inv.taxaJurosAnual,
     });
   };
 
@@ -39,19 +35,20 @@ export function TelaDashboard({ navigation }: Props) {
 
         {loading ? (
           <ActivityIndicator size="large" color="#69c6dd" style={{ marginTop: 20 }} />
+        ) : erro ? (
+          <Text style={{ color: '#c0392b', marginTop: 20, textAlign: 'center' }}>{erro}</Text>
         ) : (
           investimentos.map((inv) => {
             const isBloqueado = inv.nivelNecessario > nivelAtual;
 
             return (
-              <TouchableOpacity 
+              <TouchableOpacity
                 key={inv.id}
-                onPress={() => handleInvestmentPress(inv)} 
-                disabled={isBloqueado}
+                onPress={() => handleInvestmentPress(inv)}
                 activeOpacity={0.7}
               >
                 <View style={[
-                  styles.investmentCard, 
+                  styles.investmentCard,
                   isBloqueado && { opacity: 0.5, backgroundColor: '#e0e0e0' }
                 ]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -62,7 +59,7 @@ export function TelaDashboard({ navigation }: Props) {
                       <MaterialCommunityIcons name="lock" size={24} color="#888" />
                     )}
                   </View>
-                  
+
                   <Text style={{ color: '#666', marginBottom: 12, fontSize: 12 }}>
                     {inv.descricao}
                   </Text>
@@ -90,6 +87,14 @@ export function TelaDashboard({ navigation }: Props) {
         )}
         <View style={{ height: 40 }} />
       </ScrollView>
+      <Snackbar
+        visible={erroBloqueio}
+        onDismiss={() => setErroBloqueio(false)}
+        duration={3000}
+        action={{ label: 'OK', onPress: () => setErroBloqueio(false) }}
+      >
+        Investimento indisponível
+      </Snackbar>
     </View>
   );
 }
