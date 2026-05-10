@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { secoesEducacionais } from '../data/mockEducacao';
+import { secoesEducacionais } from '../data/catalogoEducacional';
 import { ConteudoEducacional } from '../types/ConteudoEducacional';
 import { ModalEducacao } from '../components/ModalEducacao';
 import { styles as globalStyles } from '../../../common/styles/AppStyles';
