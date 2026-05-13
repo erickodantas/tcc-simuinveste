@@ -51,8 +51,8 @@ export function TelaEducacaoInicial() {
     if (quizzesDaSecao.length === 0) return;
 
     const completouTodos = quizzesDaSecao.every(q => quizzesAcertados.includes(q.id));
-    if (completouTodos && secao.nivel === nivelAtual + 1) {
-      evoluirNivel(secao.nivel);
+    if (completouTodos && secao.nivel === nivelAtual) {
+      evoluirNivel(secao.nivel + 1);
     }
   }, [quizzesAcertados, secaoAtivaId, nivelAtual, evoluirNivel]); 
 
@@ -60,7 +60,7 @@ export function TelaEducacaoInicial() {
     <View style={globalStyles.container}>
       <ScrollView style={styles.scroll}>
         {secoesEducacionais.map((secao) => {
-          const isBloqueada = secao.nivel > nivelAtual + 1;
+          const isBloqueada = secao.nivel > nivelAtual;
           const isExpandida = secoesExpandidas.includes(secao.id);
 
           return (

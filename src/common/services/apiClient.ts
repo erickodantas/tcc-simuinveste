@@ -17,5 +17,5 @@ function resolverBaseUrl(): string {
 
 export const apiClient = axios.create({
   baseURL: resolverBaseUrl(),
-  timeout: 10000,
+  timeout: 60000,
 });
