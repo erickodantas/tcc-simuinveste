@@ -74,7 +74,7 @@ export function ModalEducacao({
       );
       setAnimando(false);
     }
-  }, [visivel, conteudo?.id]);
+  }, [visivel, conteudo, quizJaAcertado, animacaoFlip]);
   if (!conteudo) return null;
 
   const flipCard = (callback?: () => void) => {

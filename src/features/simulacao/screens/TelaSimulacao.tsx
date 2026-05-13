@@ -16,7 +16,10 @@ export function TelaSimulacao({ navigation, route }: Props) {
   const [prazo, setPrazo] = useState('');
   const [erroValidacao, setErroValidacao] = useState(false);
 
-  const parseNumero = (raw: string) => parseFloat(raw.replace(/,/g, '.'));
+  const parseNumero = (raw: string) =>
+    parseFloat(raw.replace(/\./g, '').replace(',', '.'));
+
+  const PRAZO_MAXIMO_MESES = 600;
 
   const handleSimulate = () => {
     const camposObrigatoriosVazios = !valorMeta || !aporteMensal || !prazo;
@@ -31,16 +34,23 @@ export function TelaSimulacao({ navigation, route }: Props) {
       Number.isNaN(simAporte) ||
       Number.isNaN(simMeta) ||
       Number.isNaN(simPrazo) ||
-      simPrazo <= 0;
+      simPrazo <= 0 ||
+      simPrazo > PRAZO_MAXIMO_MESES;
 
     if (camposObrigatoriosVazios || numerosInvalidos) {
       setErroValidacao(true);
       return;
     }
 
-    setErroValidacao(false);
-    const dadosSimulacao = calcularSimulacao(simInicial, simAporte, simPrazo, taxaJuros);
+    let dadosSimulacao;
+    try {
+      dadosSimulacao = calcularSimulacao(simInicial, simAporte, simPrazo, taxaJuros);
+    } catch {
+      setErroValidacao(true);
+      return;
+    }
 
+    setErroValidacao(false);
     navigation.navigate('Resultados', {
       simulacao: dadosSimulacao,
       valorMeta: simMeta,
